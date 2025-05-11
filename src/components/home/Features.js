@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/Features.css';
+import '../styles/home/Features.css';
 import { FaCalendarAlt, FaUsers, FaBell } from 'react-icons/fa';
 
 const Features = () => {

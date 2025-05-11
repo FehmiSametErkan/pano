@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import '../components/styles/UserProfile.css';
-import Logout from '../components/Logout'; // Logout bileşenini içe aktarıyoruz
+import './styles/UserProfile.css';
+import Logout from '../components/common/Logout'; // Logout bileşenini içe aktarıyoruz
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -101,8 +102,13 @@ const UserProfile = () => {
                   onClick={() => handleDeleteEvent(event.id)}
                   className="user-event-delete-button"
                 >
-                  Kaldır
+                  Etkinliği Kaldır
                 </button>
+                {userEvents && (
+                  <Link to={`/etkinlik/${event.id}/edit`} className="edit-button">
+                    Etkinliği Düzenle
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

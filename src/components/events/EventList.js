@@ -1,18 +1,14 @@
 import { useState, useEffect,useContext } from "react";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { collection, onSnapshot} from "firebase/firestore";
-import { AuthContext } from "../components/AuthProvider";
+import { AuthContext } from "../AuthProvider";
 import EventCard from "./EventCard";
-import "./styles/EventList.css";
+import "../styles/events/EventList.css";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
   const { user } = useContext(AuthContext);
 
-  // Sayfa yüklendiğinde sessionStorage'dan kullanıcı bilgisini al
-
-
- 
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "events"), (snapshot) => {

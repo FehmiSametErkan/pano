@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../components/AuthProvider";
-import { signInWithGoogle, logOut } from "../firebase";
-import "./styles/Navbar.css"
+import { AuthContext } from "../AuthProvider";
+import { signInWithGoogle, logOut } from "../../firebase";
+import "../styles/common/Navbar.css"
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -11,7 +11,7 @@ const Navbar = () => {
   const handleAuth = async () => {
     if (user) {
       await logOut();
-      navigate("/login"); // Çıkış yaptıktan sonra Login sayfasına yönlendir
+      navigate("/"); // Çıkış yaptıktan sonra Login sayfasına yönlendir
     } else {
       await signInWithGoogle();
       navigate("/"); // Giriş yapınca Ana Sayfa'ya yönlendir
@@ -36,6 +36,11 @@ const Navbar = () => {
         <Link to="/profil" >
           Profil
         </Link>
+        {user ?  
+        <Link to="etkinlik-olustur" > 
+          Etkinlik Oluştur
+        </Link>
+        : null}
         <button className="navbar-button" onClick={handleAuth} >
           {user ? "Çıkış Yap" : "Google ile Giriş Yap"}
         </button>

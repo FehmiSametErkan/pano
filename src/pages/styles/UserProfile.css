@@ -94,19 +94,28 @@
   font-size: 0.9rem;
 }
 
-.user-event-delete-button {
+.user-event-delete-button{
+  background-color: var(--delete-button-color);
+}
+.user-event-delete-button, .edit-button {
   display: block;
   padding: 12px;
   color: var(--button-text-primary);
-  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: opacity 0.3s ease-in-out;
+  width: 150px;
+  font-size: var(--font-size-base);
 }
-
-
+.edit-button{
+  background-color: var(--primary-color);
+  font-size: var(--font-size-base);
+  text-decoration: none;
+  margin-top: 10px;
+  width: 150px;
+}
 .no-events {
   text-align: center;
   color: #666;

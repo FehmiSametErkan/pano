@@ -4,6 +4,7 @@
   border-radius: 8px;
   padding: 5px 10px;
   max-width: 300px;
+  height: 370px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,6 +26,7 @@
   color: var(--gray-dark);
   margin-bottom: 15px;
 }
+
 
 .event-button { 
   align-self:flex-start ;  
@@ -60,7 +62,6 @@
 }
 .event-location {
   font-size: var(--font-size-sm);
-  margin-bottom: 15px;
   font-weight: bold;
 }
 .person-img{

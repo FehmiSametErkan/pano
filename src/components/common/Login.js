@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { signInWithGoogle } from '../firebase';  // Firebase'den Google giriş fonksiyonunu import ettik
+import { signInWithGoogle } from '../../firebase';  // Firebase'den Google giriş fonksiyonunu import ettik
 import { useNavigate } from 'react-router-dom';  // Kullanıcı giriş yaptıktan sonra yönlendirme için
-import { AuthContext } from '../components/AuthProvider';  // AuthContext'i import ettik
+import { AuthContext } from '../AuthProvider';  // AuthContext'i import ettik
 
 const Login = () => {
   const [error, setError] = useState(null);

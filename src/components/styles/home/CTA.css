@@ -14,6 +14,16 @@
   margin: 0 auto 30px;
   font-size: var(--font-size-lg);
 }
+.cta .container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cta .btn{
+  padding: 15px 40px;
+  font-size: 18px;
+}
 
 @media (max-width: 768px) {
   .cta h2 {

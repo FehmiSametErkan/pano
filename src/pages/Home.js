@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import EventList from "../components/EventList";
-import Banner from "../components/Banner"; 
-import CTA from "../components/CTA"; 
-import Features from "../components/Features";
+import EventList from "../components/events/EventList";
+import Banner from "../components/home/Banner"; 
+import CTA from "../components/home/CTA"; 
+import Features from "../components/home/Features";
+import Footer from "../components/common/Footer";
 
 const Home = () => {
 
@@ -13,7 +14,7 @@ const Home = () => {
       <EventList />
       <Features/>
       <CTA/>
-
+      <Footer/>
  
     </div>
   );

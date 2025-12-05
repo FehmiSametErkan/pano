@@ -1,4 +1,3 @@
-/* Center the form container */
 form {
   display: flex;
   flex-direction: column;
@@ -25,7 +24,6 @@ form button {
   max-width: 400px;
 }
 
-/* Add styling for form rows */
 .form-row {
   display: flex;
   flex-direction: row;
@@ -36,14 +34,12 @@ form button {
   max-width: 400px;
 }
 
-/* Style labels in form rows */
 .form-row label {
   flex: 1;
   margin-right: 10px;
   font-weight: bold;
 }
 
-/* Style inputs in form rows */
 .form-row input,
 .form-row textarea {
   flex: 2;
@@ -52,7 +48,6 @@ form button {
   border-radius: 4px;
 }
 
-/* Style the submit button */
 form button {
   background-color: #007bff;
   color: white;
@@ -65,4 +60,69 @@ form button {
 
 form button:hover {
   background-color: #0056b3;
+}
+
+.image-upload-section,
+.file-upload-section {
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0;
+}
+
+.image-upload-label,
+.file-upload-label {
+  display: block;
+  border: 2px dashed #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.image-placeholder,
+.file-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+}
+
+.image-placeholder span,
+.file-placeholder span {
+  font-size: 40px;
+}
+
+.image-preview-container,
+.file-preview-container {
+  position: relative;
+}
+
+.image-preview {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.remove-image-btn,
+.remove-file-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-input,
+.file-input {
+  display: none;
 }

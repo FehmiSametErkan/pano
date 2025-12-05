@@ -6,7 +6,7 @@ const Features = () => {
   return (
     <section className="features">
       <div className="container">
-        <h2 className="section-title">Neden Toplulug?</h2>
+        <h2 className="section-title">Neden mi Pano?</h2>
         <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon">
@@ -19,8 +19,8 @@ const Features = () => {
             <div className="feature-icon">
               <FaUsers />
             </div>
-            <h3>Topluluklar</h3>
-            <p>İlgi alanlarınızı paylaşan insanlarla tanışın ve yeni arkadaşlıklar kurun.</p>
+            <h3>Pano</h3>
+            <p>akademik takvim, ders programı ve etkinlik platformunu tek bir yerden takip edebilmek.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">

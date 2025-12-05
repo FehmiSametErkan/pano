@@ -26,7 +26,10 @@ const CreateEvent = ({ isEditMode = false }) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
   const [existingImageUrl, setExistingImageUrl] = useState("");
+  const [file, setFile] = useState(null);
+  const [existingFileUrl, setExistingFileUrl] = useState("");
   const fileInputRef = useRef(null);
+  const eventFileInputRef = useRef(null);
 
   useEffect(() => {
     if (isEditMode && etkinlikId) {
@@ -43,8 +46,10 @@ const CreateEvent = ({ isEditMode = false }) => {
               setExistingImageUrl(eventData.imageUrl);
               setPreview(eventData.imageUrl);
             }
+            if (eventData.fileUrl) {
+              setExistingFileUrl(eventData.fileUrl);
+            }
           } else {
-            console.log("Etkinlik bulunamadı!");
             navigate("/");
           }
         } catch (error) {
@@ -64,6 +69,28 @@ const CreateEvent = ({ isEditMode = false }) => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setExistingFileUrl("");
+    }
+  };
+
+  const uploadFile = async (file) => {
+    if (!file) return null;
+    const storageRef = ref(
+      storage,
+      `event-files/${user.uid}/${Date.now()}_${file.name}`
+    );
+    const metadata = {
+      contentType: file.type,
+      cacheControl: "public,max-age=31536000,immutable",
+    };
+    await uploadBytes(storageRef, file, metadata);
+    return await getDownloadURL(storageRef);
+  };
+
   const uploadImage = async (file) => {
     if (!file) return null;
 
@@ -71,11 +98,54 @@ const CreateEvent = ({ isEditMode = false }) => {
       storage,
       `event-images/${user.uid}/${Date.now()}_${file.name}`
     );
-    await uploadBytes(storageRef, file);
+
+    const resizeIfNeeded = async (fileToCheck) => {
+      try {
+        const MAX_BYTES = 500 * 1024; 
+        const MAX_WIDTH = 1600; 
+        const MAX_HEIGHT = 1200; 
+        const QUALITY = 0.8; 
+
+        if (fileToCheck.size <= MAX_BYTES) return fileToCheck;
+
+        const bitmap = await createImageBitmap(fileToCheck);
+        let { width, height } = bitmap;
+
+        const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height, 1);
+        const targetWidth = Math.round(width * ratio);
+        const targetHeight = Math.round(height * ratio);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+
+        const blob = await new Promise((resolve) =>
+          canvas.toBlob(resolve, fileToCheck.type, QUALITY)
+        );
+
+        if (!blob) return fileToCheck;
+
+        const compressed = new File([blob], fileToCheck.name, { type: fileToCheck.type });
+        return compressed;
+      } catch (err) {
+        console.warn('Image resize failed, uploading original', err);
+        return fileToCheck;
+      }
+    };
+
+    const metadata = {
+      contentType: file.type,
+      cacheControl: "public,max-age=31536000,immutable",
+    };
+
+    const toUpload = await resizeIfNeeded(file);
+
+    await uploadBytes(storageRef, toUpload, metadata);
     return await getDownloadURL(storageRef);
   };
 
-  console.log(user)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !description || !date || !location) {
@@ -93,9 +163,14 @@ const CreateEvent = ({ isEditMode = false }) => {
       } else if (!preview && existingImageUrl) {
         const oldImageRef = ref(storage, existingImageUrl);
         await deleteObject(oldImageRef).catch((error) => {
-          console.log("Fotoğrafı silerken bir hata oluştu", error);
         });
         imageUrl = null;
+      }
+
+      let fileUrl = existingFileUrl;
+      if (file) {
+        fileUrl = await uploadFile(file);
+      } else if (!file && existingFileUrl) {
       }
 
       const eventData = {
@@ -104,6 +179,7 @@ const CreateEvent = ({ isEditMode = false }) => {
         date,
         location,
         imageUrl,
+        fileUrl,
         creator: {
           uid: user.uid,
           displayName: user.displayName,
@@ -131,6 +207,7 @@ const CreateEvent = ({ isEditMode = false }) => {
         setLocation("");
         setImage(null);
         setPreview("");
+        setFile(null);
       }
     } catch (error) {
       console.error("Hata:", error);
@@ -146,6 +223,14 @@ const CreateEvent = ({ isEditMode = false }) => {
     setExistingImageUrl("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFile(null);
+    setExistingFileUrl("");
+    if (eventFileInputRef.current) {
+      eventFileInputRef.current.value = "";
     }
   };
 
@@ -208,9 +293,40 @@ const CreateEvent = ({ isEditMode = false }) => {
         <input
           type="date"
           value={date}
+          min={new Date().toISOString().split("T")[0]}
           onChange={(e) => setDate(e.target.value)}
           required
         />
+
+        <div className="file-upload-section">
+          <label htmlFor="event-file" className="file-upload-label">
+            {file || existingFileUrl ? (
+              <div className="file-preview-container">
+                <p>{file ? file.name : "Dosya mevcut"}</p>
+                <button
+                  type="button"
+                  className="remove-file-btn"
+                  onClick={handleRemoveFile}
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <div className="file-placeholder">
+                <span>+</span>
+                <p>Dosya Ekle (PDF, vb.)</p>
+              </div>
+            )}
+          </label>
+          <input
+            id="event-file"
+            type="file"
+            onChange={handleFileChange}
+            ref={eventFileInputRef}
+            className="file-input"
+          />
+        </div>
+
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting
             ? "Kaydediliyor..."

@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { collection, query, where, getDocs, deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
+import { FaCheckCircle } from 'react-icons/fa';
 import './styles/UserProfile.css';
-import Logout from '../components/common/Logout'; // Logout bileşenini içe aktarıyoruz
+import Logout from '../components/common/Logout'; 
+import defaultAvatar from "../assets/default-avatar.jpg";
+
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [userEvents, setUserEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Auth state listener
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        await currentUser.reload(); 
+        
+        (async () => {
+          try {
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            const userDocSnap = await getDoc(userDocRef);
+            if (userDocSnap.exists()) setUserProfile(userDocSnap.data());
+          } catch (e) {
+            console.warn('Could not fetch user profile', e);
+          }
+        })();
         fetchUserEvents(currentUser.uid);
       } else {
         setLoading(false);
@@ -38,13 +52,12 @@ const UserProfile = () => {
         events.push({ 
           id: doc.id,
           ...eventData,
-          // String tarihi Date objesine çeviriyoruz
+       
           date: eventData.date ? new Date(eventData.date) : null
         });
       });
 
       setUserEvents(events);
-      console.log(events)
     } catch (error) {
       console.error("Error fetching events: ", error);
     } finally {
@@ -60,62 +73,82 @@ const UserProfile = () => {
     }
   };
 
+  if (loading) {
+    return <div>Yükleniyor...</div>;
+  }
 
-  if (!user) return <div>Lütfen giriş yapın...</div>;
+  if (!user) {
+    return (
+      <div>
+        Lütfen profilinizi görüntülemek için <Link to="/login">giriş yapın</Link>.
+      </div>
+    );
+  }
 
+  const formatDate = (date) => {
+    if (!date) return 'Tarih Belirtilmemiş';
+    return new Intl.DateTimeFormat('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(date);
+  };
+  
   return (
     <div className="user-profile-container">
-      {/* Profile Section */}
-      <div className="profile-section">
-      {user ? (
-        <div className="profile-info">
-          <h1>Hoşgeldiniz, {user.displayName || user.email}!</h1>
-          <img src={user.photoURL} alt="Profil Fotoğrafı" width="100" />
-          <p>Email: {user.email}</p>
-          <Logout /> {/* Çıkış butonunu ekledik */}
-        </div>
-      ) : (
-        <div>
-          <p>Giriş Yapmadınız</p>
-        </div>
-      )}
-      </div>
-
-      {/* Events Section */}
-      <div className="user-events-section">
-        <h2 className="user-events-title">Etkinlikleriniz</h2>
+      <header className="profile-header">
+        <h1>Profilim</h1>
         
-        {loading ? (
-          <p className="loading-text">Yükleniyor...</p>
-        ) : userEvents.length > 0 ? (
-          <ul className="user-event-list">
-            {userEvents.map(event => (
-              <li key={event.id} className="user-event-item">
-                <div className="user-event-content">
-                  <h3>{event.title}</h3>
-                  <p className="user-event-description">{event.description}</p>
-                  <span className="user-event-date">
-                      {event.date?.toLocaleDateString('tr-TR') || 'Tarih belirtilmemiş'}
-                  </span>
+        <br/>
+        <div className="user-info">
+          {console.log(user)}
+          <img 
+              src={user.photoURL || defaultAvatar} 
+            alt="Profil" 
+            className="profile-avatar"
+          />
+        <br/>
+
+          <div className="user-details">
+        <br/>
+
+            <h2>{userProfile?.displayName || user?.displayName || 'Anonymous User'}</h2>
+            <p className="email">
+              {user.email}
+              {user.emailVerified && <FaCheckCircle className="verified-icon" />}
+            </p>
+            {!user.emailVerified && (
+              <button 
+                onClick={() => sendEmailVerification(user)} 
+                className="verify-email-button"
+              >
+                E-postayı doğrula
+              </button>
+            )}
+          </div>
+        </div>
+      </header>
+      
+      <main className="profile-main">
+        <section className="user-events">
+          <h3>Oluşturduğum Etkinlikler</h3>
+          {userEvents.length > 0 ? (
+            <div className="events-grid">
+              {userEvents.map(event => (
+                <div key={event.id} className="user-created-event-card">
+                  <h4>{event.title}</h4>
+                  <div className="event-actions">
+                  <Link to={`/etkinlik/${event.id}/edit`} className="user-event-details-button">Düzenle</Link>
+                  <button onClick={() => handleDeleteEvent(event.id)} className="user-event-delete-button">Sil</button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleDeleteEvent(event.id)}
-                  className="user-event-delete-button"
-                >
-                  Etkinliği Kaldır
-                </button>
-                {userEvents && (
-                  <Link to={`/etkinlik/${event.id}/edit`} className="edit-button">
-                    Etkinliği Düzenle
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-events">Henüz etkinlik oluşturmadınız.</p>
-        )}
-      </div>
+              ))}
+            </div>
+          ) : (
+            <p>Henüz bir etkinlik oluşturmadınız. <Link to="/create-event">Yeni bir tane oluşturun!</Link></p>
+          )}
+        </section>
+      </main>
     </div>
   );
 };

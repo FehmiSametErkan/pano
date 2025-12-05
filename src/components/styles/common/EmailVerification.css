@@ -1,0 +1,26 @@
+.email-verification-banner {
+  background-color: #ffc107;
+  color: #000;
+  padding: 10px 15px;
+  text-align: center;
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: auto;
+  z-index: 1000;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.email-verification-banner p {
+  margin: 0;
+}
+
+.email-verification-banner button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}

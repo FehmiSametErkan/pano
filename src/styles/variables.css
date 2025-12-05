@@ -1,21 +1,18 @@
 :root {
-  /* Renkler */
-  --primary-color: #ffb800; /* Sarı Buton */
-  --secondary-color: #000000; /* Siyah Buton */
-  --background-color: #ffffff; /* Genel Arkaplan */
-  --text-color: #333333; /* Genel Yazı Rengi */
-  --gray-light: #f5f5f5; /* Açık Gri Arkaplan */
-  --gray-dark: #777777; /* Koyu Gri Yazılar */
-  --border-color: #e0e0e0; /* Kart Çizgi Rengi */
-  --delete-button-color: #ff0000; /* Silme Butonu Rengi */
+  --primary-color: #ffb800;
+  --secondary-color: #000000; 
+  --background-color: #ffffff; 
+  --text-color: #333333; 
+  --gray-light: #f5f5f5;
+  --gray-dark: #777777; 
+  --border-color: #e0e0e0;
+  --delete-button-color: #ff0000;
 
-  /* Buton Renkleri */
   --button-bg-primary: var(--primary-color);
   --button-text-primary: #ffffff;
   --button-bg-secondary: var(--secondary-color);
   --button-text-secondary: #ffffff;
 
-  /* Font Ayarları */
   --font-family-primary: 'Inter', sans-serif;
   --font-family-secondary: 'Open Sans', sans-serif;
   --font-size-base: 16px;

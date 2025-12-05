@@ -157,7 +157,7 @@
   outline: none;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;

@@ -1,0 +1,60 @@
+.login-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:40px 0;
+}
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:var(--background-color-light);
+  border:1px solid var(--border-color);
+  padding:24px;
+  border-radius:8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.btn{ padding:8px 12px; border-radius:6px; border:1px solid #ddd; background:transparent; cursor:pointer }
+.btn-selected{ background:var(--primary-color); color:var(--button-text-primary); border-color:transparent }
+.login-box h2{ margin-bottom: 12px; text-align:center }
+.auth-form{ display:flex; flex-direction:column; gap:10px; }
+.auth-form input{ padding:10px 12px; border-radius:6px; border:1px solid #ddd; background:transparent; color:var(--text-color); }
+.primary-btn{ background:var(--primary-color); color:var(--button-text-primary); padding:10px; border-radius:6px; border:none; cursor:pointer }
+.google-login-button{ width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; border-radius:6px; border:1px solid #ddd; background:white; cursor:pointer }
+.divider{ text-align:center; margin:8px 0; color:var(--gray-dark); }
+.mode-toggle{ text-align:center; margin-top:12px; }
+.mode-toggle button{ background:none; border:none; color:var(--primary-color); cursor:pointer; text-decoration:underline; }
+.error-message{ color:#d9534f; margin-top:8px; text-align:center; }
+.success-message{ color: #2e7d32; margin-top:8px; text-align:center; }
+.primary-btn[disabled]{ opacity: 0.7; cursor: not-allowed; }
+
+.forgot-password-btn{ 
+  background: none; 
+  border: none; 
+  color: var(--primary-color); 
+  cursor: pointer; 
+  text-decoration: underline; 
+  padding: 0; 
+  font-size: 14px;
+  text-align: center;
+  margin-top: -5px;
+}
+
+.forgot-password-btn:hover{ 
+  opacity: 0.8; 
+}
+
+.password-reset-form{ 
+  margin-top: 16px; 
+  padding-top: 16px; 
+  border-top: 1px solid var(--border-color); 
+}
+
+.password-reset-form h3{ 
+  margin: 0 0 12px 0; 
+  font-size: 16px; 
+  text-align: center;
+}
+
+.password-reset-form button{ 
+  margin-top: 8px; 
+}

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
-import { signInWithGoogle, logOut } from "../../firebase";
+import { logOut } from "../../firebase";
 import "../styles/common/Navbar.css"
 
 const Navbar = () => {
@@ -11,27 +11,23 @@ const Navbar = () => {
   const handleAuth = async () => {
     if (user) {
       await logOut();
-      navigate("/"); // Çıkış yaptıktan sonra Login sayfasına yönlendir
+      navigate("/"); 
     } else {
-      await signInWithGoogle();
-      navigate("/"); // Giriş yapınca Ana Sayfa'ya yönlendir
+      navigate("/login"); 
     }
   };
 
   return (
     <nav className="navbar">
-      {/* Logo */}
+      
       <Link to="/" className="navbar-logo">
-        📌 Toplulug
+        📌 Pano
       </Link>
 
-      {/* Sağdaki butonlar */}
+      
       <div className="navbar-links">
         <Link to="/etkinlikler" >
           Etkinlikler
-        </Link>
-        <Link to="/sehirler" >
-          Şehirler
         </Link>
         <Link to="/profil" >
           Profil
@@ -42,7 +38,7 @@ const Navbar = () => {
         </Link>
         : null}
         <button className="navbar-button" onClick={handleAuth} >
-          {user ? "Çıkış Yap" : "Google ile Giriş Yap"}
+          {user ? "Çıkış Yap" : "Giriş Yap"}
         </button>
       </div>
     </nav>

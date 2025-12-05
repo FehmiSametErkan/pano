@@ -17,7 +17,6 @@ const Footer = () => {
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
-          {/* Column 1 - About */}
           <div className="footer-column">
             <h3 className="footer-title">Toplulug</h3>
             <p className="footer-about">
@@ -40,7 +39,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 2 - Quick Links */}
+          
           <div className="footer-column">
             <h3 className="footer-title">Hızlı Linkler</h3>
             <ul className="footer-links">
@@ -59,7 +58,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3 - Support */}
+          
           <div className="footer-column">
             <h3 className="footer-title">Yardım</h3>
             <ul className="footer-links">
@@ -81,7 +80,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4 - Contact & App */}
+          
           <div className="footer-column">
             <h3 className="footer-title">İletişim</h3>
             <ul className="footer-contact">

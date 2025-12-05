@@ -92,7 +92,6 @@ const UserProfile = () => {
         
         <br/>
         <div className="user-info">
-          {console.log(user)}
           <img 
               src={user.photoURL || defaultAvatar} 
             alt="Profil" 

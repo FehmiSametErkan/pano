@@ -5,7 +5,6 @@ import { collection, query, where, getDocs, deleteDoc, doc, getDoc } from 'fireb
 import { onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
 import { FaCheckCircle } from 'react-icons/fa';
 import './styles/UserProfile.css';
-import Logout from '../components/common/Logout'; 
 import defaultAvatar from "../assets/default-avatar.jpg";
 
 
@@ -85,15 +84,7 @@ const UserProfile = () => {
     );
   }
 
-  const formatDate = (date) => {
-    if (!date) return 'Tarih Belirtilmemiş';
-    return new Intl.DateTimeFormat('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }).format(date);
-  };
-  
+
   return (
     <div className="user-profile-container">
       <header className="profile-header">
